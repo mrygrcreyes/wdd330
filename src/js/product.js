@@ -1,18 +1,17 @@
-import { setLocalStorage } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
+//js for the product_pages/index.html page
+//get the productid from dynamic searchquery (url) using getParams in utils.js
+//create product Data class from json using ProductData in ProductData.js
+//create a ProductDetails class based on the id and data class.
+//initialize productDetails which builds the product page details
 
-const dataSource = new ProductData("tents");
+import ExternalServices from './ExternalServices.mjs';
+import ProductDetails from './ProductDetails.mjs';
+import { loadHeaderFooter, getParams } from './utils.mjs';
 
-function addProductToCart(product) {
-  setLocalStorage("so-cart", product);
-}
-// add to cart button event handler
-async function addToCartHandler(e) {
-  const product = await dataSource.findProductById(e.target.dataset.id);
-  addProductToCart(product);
-}
+//wk3
+loadHeaderFooter();
 
-// add listener to Add to Cart button
-document
-  .getElementById("addToCart")
-  .addEventListener("click", addToCartHandler);
+const productId = getParams('product');
+const dataSource = new ExternalServices();
+const product = new ProductDetails(productId, dataSource);
+product.init();
